@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <component name="NotificationConfiguration">
+    <notification groupId="IDE Usage Statistics" displayType="STICKY_BALLOON" shouldLog="false" />
+    <toolWindow group="Find in Path" />
+    <toolWindow group="Debugger messages" />
+  </component>
+</application>
+
