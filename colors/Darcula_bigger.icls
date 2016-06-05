@@ -52,12 +52,6 @@
         <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
-    <option name="ATTR_INTERNAL_CALL_ID">
-      <value>
-        <option name="FOREGROUND" value="a2cff5" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
     <option name="BAD_CHARACTER">
       <value>
         <option name="EFFECT_COLOR" value="ff0000" />
@@ -204,11 +198,6 @@
         <option name="FOREGROUND" value="bbbbbb" />
       </value>
     </option>
-    <option name="CONSOLE_OUTPUT">
-      <value>
-        <option name="BACKGROUND" value="454545" />
-      </value>
-    </option>
     <option name="CONSOLE_RANGE_TO_EXECUTE">
       <value>
         <option name="BACKGROUND" value="3e3850" />
@@ -307,8 +296,8 @@
     </option>
     <option name="CTRL_CLICKABLE">
       <value>
-        <option name="FOREGROUND" value="ff" />
-        <option name="EFFECT_COLOR" value="ff" />
+        <option name="FOREGROUND" value="589df6" />
+        <option name="EFFECT_COLOR" value="589df6" />
         <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
@@ -560,11 +549,6 @@
         <option name="FOREGROUND" value="db4233" />
       </value>
     </option>
-    <option name="GROOVY_KEYWORD">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-      </value>
-    </option>
     <option name="GString">
       <value>
         <option name="FOREGROUND" value="6a8759" />
@@ -759,11 +743,6 @@
         <option name="EFFECT_TYPE" value="2" />
       </value>
     </option>
-    <option name="JAVA_KEYWORD">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-      </value>
-    </option>
     <option name="JAVA_LINE_COMMENT">
       <value>
         <option name="FOREGROUND" value="808080" />
@@ -782,11 +761,6 @@
     <option name="JAVA_STRING">
       <value>
         <option name="FOREGROUND" value="6a8759" />
-      </value>
-    </option>
-    <option name="JAVA_VALID_STRING_ESCAPE">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
       </value>
     </option>
     <option name="JFLEX.OPTION_KEYWORD">
@@ -843,17 +817,6 @@
       <value>
         <option name="EFFECT_COLOR" value="a9b7c6" />
         <option name="EFFECT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="JSP_DIRECTIVE_NAME">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="JSP_SCRIPTING_BACKGROUND">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
       </value>
     </option>
     <option name="LABEL">
@@ -1004,25 +967,6 @@
         <option name="FOREGROUND" value="9876aa" />
       </value>
     </option>
-    <option name="PROPERTIES.INVALID_STRING_ESCAPE">
-      <value>
-        <option name="FOREGROUND" value="ffc66d" />
-        <option name="BACKGROUND" value="450505" />
-        <option name="EFFECT_COLOR" value="ff0000" />
-        <option name="EFFECT_TYPE" value="2" />
-      </value>
-    </option>
-    <option name="PROPERTIES.KEY">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="EFFECT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="PROPERTIES.KEY_VALUE_SEPARATOR">
-      <value>
-        <option name="FOREGROUND" value="808080" />
-      </value>
-    </option>
     <option name="PROPERTIES.VALUE">
       <value>
         <option name="FOREGROUND" value="6a8759" />
@@ -1150,25 +1094,10 @@
         <option name="BACKGROUND" value="15463c" />
       </value>
     </option>
-    <option name="SASS_ATTRIBUTE">
-      <value>
-        <option name="FOREGROUND" value="6d9cbe" />
-      </value>
-    </option>
     <option name="SASS_COMMENT">
       <value>
         <option name="FOREGROUND" value="bc9455" />
         <option name="FONT_TYPE" value="2" />
-      </value>
-    </option>
-    <option name="SASS_CONSTANT">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
-      </value>
-    </option>
-    <option name="SASS_DIRECTIVE">
-      <value>
-        <option name="FOREGROUND" value="cc7833" />
       </value>
     </option>
     <option name="SASS_MIXIN">
@@ -1180,11 +1109,6 @@
       <value>
         <option name="FOREGROUND" value="a5c261" />
         <option name="EFFECT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="SASS_RULE">
-      <value>
-        <option name="FOREGROUND" value="e8bf6a" />
       </value>
     </option>
     <option name="SASS_STRING">
@@ -1280,33 +1204,12 @@
         <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
-    <option name="STATIC_METHOD_ATTRIBUTES">
-      <value>
-        <option name="FONT_TYPE" value="2" />
-      </value>
-    </option>
-    <option name="Scala Type Alias">
-      <value>
-        <option name="FOREGROUND" value="4e807d" />
-      </value>
-    </option>
-    <option name="Scala Type parameter">
-      <value>
-        <option name="FOREGROUND" value="4e807d" />
-      </value>
-    </option>
     <option name="Static field">
       <value>
         <option name="FOREGROUND" value="d0d0ff" />
         <option name="FONT_TYPE" value="3" />
         <option name="EFFECT_COLOR" value="ffffff" />
         <option name="EFFECT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="Static method access">
-      <value>
-        <option name="FOREGROUND" value="9876aa" />
-        <option name="FONT_TYPE" value="2" />
       </value>
     </option>
     <option name="Static property reference ID">
@@ -1318,18 +1221,6 @@
     <option name="String">
       <value>
         <option name="FOREGROUND" value="6a8759" />
-      </value>
-    </option>
-    <option name="TAPESTRY_COMPONENT_PARAMATER">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="TAPESTRY_COMPONENT_TAG">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="FONT_TYPE" value="1" />
       </value>
     </option>
     <option name="TEMPLATE_VARIABLE_ATTRIBUTES">
@@ -1391,31 +1282,9 @@
         <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
-    <option name="VELOCITY_DIRECTIVE">
-      <value>
-        <option name="FOREGROUND" value="e8bf6a" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="VELOCITY_KEYWORD">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
     <option name="VELOCITY_NUMBER">
       <value>
         <option name="FOREGROUND" value="6897bb" />
-      </value>
-    </option>
-    <option name="VELOCITY_REFERENCE">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
-      </value>
-    </option>
-    <option name="VELOCITY_SCRIPTING_BACKGROUND">
-      <value>
-        <option name="BACKGROUND" value="303030" />
       </value>
     </option>
     <option name="VELOCITY_STRING">
@@ -1493,12 +1362,6 @@
         <option name="FOREGROUND" value="e8bf6a" />
       </value>
     </option>
-    <option name="XPATH.KEYWORD">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
     <option name="XPATH.NUMBER">
       <value>
         <option name="FOREGROUND" value="6897bb" />
@@ -1507,17 +1370,6 @@
     <option name="XPATH.STRING">
       <value>
         <option name="FOREGROUND" value="6a8759" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="XPATH.XPATH_NAME">
-      <value>
-        <option name="FOREGROUND" value="da4939" />
-      </value>
-    </option>
-    <option name="XPATH.XPATH_VARIABLE">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
         <option name="FONT_TYPE" value="1" />
       </value>
     </option>
@@ -1567,24 +1419,6 @@
       <value>
         <option name="FOREGROUND" value="a5c261" />
         <option name="EFFECT_TYPE" value="2" />
-      </value>
-    </option>
-    <option name="osmorc.attributeName">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="osmorc.directiveName">
-      <value>
-        <option name="FOREGROUND" value="d0d0ff" />
-        <option name="FONT_TYPE" value="1" />
-      </value>
-    </option>
-    <option name="osmorc.headerName">
-      <value>
-        <option name="FOREGROUND" value="cc7832" />
-        <option name="FONT_TYPE" value="1" />
       </value>
     </option>
   </attributes>
