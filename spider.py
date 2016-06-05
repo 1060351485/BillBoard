@@ -15,4 +15,4 @@ request = urllib2.Request(url)
 response = urllib2.urlopen(request)
 page = response.read()
 
-print page
+# print page
