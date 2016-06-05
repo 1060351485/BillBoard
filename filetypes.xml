@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <application>
-  <component name="FileTypeManager" version="11">
-    <ignoreFiles list="CVS;SCCS;RCS;rcs;.DS_Store;.svn;.pyc;.pyo;*.pyc;*.pyo;.git;*.hprof;_svn;.hg;*.lib;*~;__pycache__;.bundle;*.rbc;*$py.class;" />
+  <component name="FileTypeManager" version="17">
+    <ignoreFiles list="*$py.class;*.hprof;*.pyc;*.pyo;*.rbc;*~;.DS_Store;.git;.hg;.pyc;.pyo;.svn;CVS;RCS;SCCS;__pycache__;_svn;rcs;" />
     <extensionMap>
-      <mapping pattern="text" type="Python" />
       <mapping pattern="ps0" type="Python" />
+      <mapping pattern="main_window" type="Python" />
+      <mapping pattern="text" type="Python" />
     </extensionMap>
   </component>
 </application>
-
