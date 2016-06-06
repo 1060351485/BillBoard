@@ -7,3 +7,11 @@
 #
 # """
 
+KEYS = {
+    'Quit': 'q',
+    'Next': 'n',
+    'VolumeUp': 'i',
+    'VolumeDown': 'k',
+    'Pause': 'p',
+    'Play': 'Enter',
+}
