@@ -27,7 +27,7 @@ last_week = re.findall(r'Last\sWeek:\s([0-9 -]+)</', page)
 song_list = re.findall(r'chart-row__song">(.*?)</h2', page.encode('utf-8'))
 singer_list = re.findall(r'chart-row__artist.*?Artist\sName">([^0-9]*?)</a', page)
 
-# song_list = soup.find_all('h2', class_='chart-row__song')
+#  song_list = soup.find_all('h2', class_='chart-row__song')
 # singer_list = soup.find_all('a', class_='chart-row__artist')
 # last_week = soup.find_all('span', class_='chart-row__last-week')
 
