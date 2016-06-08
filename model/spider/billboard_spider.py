@@ -27,7 +27,7 @@ class BillBoardSpider(object):
         self.url = billboard_url
         self.net_status = False
 
-        self.net_response = None
+        self.page = None
         # put information into json and write it to a file
         self.json_list = None
         self.file_name = 'billboard_list.json'
@@ -37,28 +37,30 @@ class BillBoardSpider(object):
 
     def _check_internet_on(self):
         try:
-            self.net_response = urllib2.urlopen(self.url, timeout=1)
+            request = urllib2.Request(self.url)
+            request.add_header('User-agent', 'Mozilla/5.0 (Linux i686)')
+            net_response = urllib2.urlopen(request, timeout=5)
+            self.page = net_response.read()
             return True
-        except urllib2.URLError as err:
-            pass
+        except urllib2.URLError or urllib2.HTTPError as err:
+            print err
         return False
 
     # Must call _check_internet_on first(to get the response)
     def _check_is_latest(self, date_time):
 
         # if file exists, load it, else load from the internet
-        if not os.path.exists(self.file_name):
-            return False
-        # get old time from file
+        if self._billboard_json_exist():
+            # get old time from file
 
-        json_file = file(self.file_name)
-        billboard_list = json.load(json_file)
+            json_file = file(self.file_name)
+            billboard_list = json.load(json_file)
 
-        if billboard_list[0] == date_time:
-            self.json_list = billboard_list
-            return True
-        else:
-            return False
+            if billboard_list[0] == date_time:
+                self.json_list = billboard_list
+                return True
+            else:
+                return False
 
     """
 
@@ -76,8 +78,7 @@ class BillBoardSpider(object):
             return
 
         # Get datetime from the internet
-        page = self._get_response_page()
-        soup_page = BeautifulSoup(page, 'html.parser')
+        soup_page = BeautifulSoup(self.page, 'html.parser')
 
         date_time = soup_page.find('time').get_text()
 
@@ -89,7 +90,7 @@ class BillBoardSpider(object):
         # song_list = re.findall(r'chart-row__song">([a-Z]*?)</h2', page)
         # singer_list = re.findall(r'chart-row__artist.*?Artist\sName">([^0-9]*?)</a', page)
 
-        last_week = re.findall(r'Last\sWeek:\s([0-9 -]+)</', page)
+        last_week = re.findall(r'Last\sWeek:\s([0-9 -]+)</', self.page)
         song_list = soup_page.find_all('h2', class_='chart-row__song')
         singer_list = soup_page.find_all('a', class_='chart-row__artist')
 
@@ -113,20 +114,24 @@ class BillBoardSpider(object):
         file_object.write(str(json.dumps(self.json_list)))
         file_object.close()
 
-    def read_from_file(self):
+    def _read_from_file(self):
         json_file = file(self.file_name)
         self.json_list = json.load(json_file)
-
-    def _get_response_page(self):
-        return self.net_response.read()
+        return True
 
     def print_list(self):
-        print self.json_list[0]
-        for i in range(1, 101):
-            print '%-8s' % self.json_list[i]['last_rank'],
-            print '%3s  ' % self.json_list[i]['this_rank'],
-            print '%-40s' % self.json_list[i]['song'],
-            print '%-20s' % self.json_list[i]['artist']
+        if not self.net_status:
+            print 'No network'
+            return
+        if self._billboard_json_exist():
+            print self.json_list[0]
+            for i in range(1, 101):
+                print '%-8s' % self.json_list[i]['last_rank'],
+                print '%3s  ' % self.json_list[i]['this_rank'],
+                print '%-40s' % self.json_list[i]['song'],
+                print '%-20s' % self.json_list[i]['artist']
+        else:
+            print 'File named: %s don\'t exist', self.file_name
 
     def _print_rank(self, this_rank, last_week):
         if not last_week.isalnum():
@@ -139,11 +144,38 @@ class BillBoardSpider(object):
         else:
             return 'down:' + str(this_rank - last_rank)
 
+    # check validness first
     def get_billboard_list(self):
-        return self.json_list
+        if self.json_list is not None:
+            return self.json_list
+        else:
+            if self._billboard_json_exist():
+                self._read_from_file()
+                return self.json_list
+            else:
+                print 'File %s is missing. Please confirm network connection' % self.file_name
+
+    # check validness
+    def get_list_from(self, from_index, to_index):
+        if self.json_list is not None or self._billboard_json_exist() and self._read_from_file():
+            if from_index + 1 > len(self.json_list) or to_index + 1 > len(
+                    self.json_list) or from_index > to_index:
+                print 'Invalid input: %d, %d' % (from_index, to_index)
+                return None
+            else:
+                return self.json_list[from_index:to_index + 1]
+        else:
+            print 'No source list saved in json_list or billboard.json'
+
+    def _billboard_json_exist(self):
+        if not os.path.exists(self.file_name):
+            # print 'File named:%s don\'t exist' % self.file_name
+            return False
+        return True
 
 
-# spider = BillBoardSpider()
-# spider.print_list()
+spider = BillBoardSpider()
+# print spider.get_list_from(100, 20)
+# print spider.get_billboard_list()
 # billboard_list = spider.get_billboard_list()
 # print billboard_list
