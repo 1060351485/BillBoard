@@ -174,7 +174,7 @@ class BillBoardSpider(object):
         return True
 
 
-spider = BillBoardSpider()
+# spider = BillBoardSpider()
 # print spider.get_list_from(100, 20)
 # print spider.get_billboard_list()
 # billboard_list = spider.get_billboard_list()
