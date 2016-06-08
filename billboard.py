@@ -36,7 +36,7 @@ class BillBoardPlayer(object):
         self.list_box = self.get_music_list(u'Music List', self.choices)
 
         self.main = urwid.Padding(self.list_box, left=10, right=2)
-        top = urwid.Overlay(self.main, urwid.SolidFill(u'%'),
+        top = urwid.Overlay(self.main, urwid.SolidFill(),
                             align='left', width=('relative', 60),
                             valign='middle', height=('relative', 60),
                             min_width=20, min_height=9)
