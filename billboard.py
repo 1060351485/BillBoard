@@ -11,6 +11,7 @@
 import urwid
 from views.playerListBox import PlayerListBox
 from model.player.player import Player
+from model.spider.billboard_spider import BillBoardSpider
 
 
 class BillBoardPlayer(object):
@@ -18,9 +19,13 @@ class BillBoardPlayer(object):
         self.palette = None
         self.main_loop = None
         self.main = None
-        self.choices = u'you 2 3 Idle Jones Palin'.split()
+        self.choices = u'you 2 3 Idle Jones Palin fsf rwr fsdf qwe'.split()
         self.list_box = None
+        self.current_page = 1
 
+        # todo: Spider is too slow, block the view!
+        self.spider = BillBoardSpider()
+        self.choices = self.spider.get_list_from(1, 10)
         self.music_player = Player()
 
         self._setup_ui()
