@@ -21,10 +21,10 @@ class Player(object):
         self.loop_one_song = False
         self.loop_all = False
         self.subprocess = None
-        self.music_url = '/Users/apple/PycharmProjects/BillBoard/'
+        self.music_url = os.getcwd()
         self.queue = Queue.Queue()
         self.platfrom = platform.system()
-        self.error_handle = open(self.music_url + 'model/player/' + 'tmp.log', 'wt')
+        self.error_handle = open(self.music_url + '/model/player/' + 'tmp.log', 'wt')
         # print self.platfrom
         # print platform.release()
 
