@@ -1,0 +1,1 @@
+2016-06-08 10:27:24.511 mplayer[59346:2643722] 10:27:24.511 WARNING:  140: This application, or a library it uses, is using the deprecated Carbon Component Manager for hosting Audio Units. Support for this will be removed in a future release. Also, this makes the host incompatible with version 3 audio units. Please transition to the API's in AudioComponent.h.
