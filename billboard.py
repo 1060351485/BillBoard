@@ -19,13 +19,18 @@ class BillBoardPlayer(object):
         self.palette = None
         self.main_loop = None
         self.main = None
-        self.choices = u'you 2 3 Idle Jones Palin fsf rwr fsdf qwe'.split()
+        self.choices = []  # song list
         self.list_box = None
-        self.current_page = 1
 
-        # todo: Spider is too slow, block the view!
+        # todo: Spider is too slow, block the view! Initialize main window
         self.spider = BillBoardSpider()
-        self.choices = self.spider.get_list_from(1, 10)
+        self.json_list = self.spider.read_from_file()
+        self.choices = []
+        for i in range(1, 101):
+            self.choices.append('%2s. %-10s %10s' % (
+                self.json_list[i]['this_rank'], self.json_list[i]['song'] + ' / ' + self.json_list[i]['artist'],
+                self.json_list[i]['last_rank']))
+
         self.music_player = Player()
 
         self._setup_ui()
@@ -42,10 +47,10 @@ class BillBoardPlayer(object):
 
         self.main = urwid.Padding(self.list_box, left=10, right=2)
         top = urwid.Overlay(self.main, urwid.SolidFill(),
-                            align='left', width=('relative', 60),
+                            align='left', width=('relative', 80),
                             valign='middle', height=('relative', 60),
                             min_width=20, min_height=9)
-        self.main_loop = urwid.MainLoop(top)  # , palette=self.palette)
+        self.main_loop = urwid.MainLoop(top, palette=self.palette)
 
     def _setup_signals(self):
         urwid.register_signal(PlayerListBox, ['quit', 'next', 'pause', 'stop', 'mute', 'volume_up', 'volume_down'])
