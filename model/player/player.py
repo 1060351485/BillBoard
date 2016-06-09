@@ -38,25 +38,27 @@ class Player(object):
         self.is_playing = True
         self.current_playing = name
 
-    # def send_command(self):
-    #     pass
-
     def stop(self):
         if self.subprocess:
             self.subprocess.kill()
         self.is_playing = False
 
     def pause(self):
-        self.subprocess.stdin.write(u'p')
+        if self.is_playing:
+            self.subprocess.stdin.write(u'p')
+        self.is_playing = not self.is_playing
 
     def mute(self):
-        self.subprocess.stdin.write(u'm')
+        if self.is_playing:
+            self.subprocess.stdin.write(u'm')
 
     def volume_up(self):
-        self.subprocess.stdin.write(u'0')
+        if self.is_playing:
+            self.subprocess.stdin.write(u'0')
 
     def volume_down(self):
-        self.subprocess.stdin.write(u'9')
+        if self.is_playing:
+            self.subprocess.stdin.write(u'9')
 
     def close(self):
         pass
