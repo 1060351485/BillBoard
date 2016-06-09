@@ -3,7 +3,9 @@
 
 # """
 #
-# 顶层文件
+#   ┬┐ ┬ ┬  ┬   ┬┐ ┌─┐┌─┐┬─┐┬─┐  ┌┬┐┌─┐┬─┐   ┬ ┌─┐┌─┐
+#   ├┴┐│ │  │   ├┴┐│ │├─┤├┬┘│ │   │ │ │├─┘   │ │ ││ │
+#   ┴─┘┴ ┴─┘┴─┘ ┴─┘└─┘┴ ┴┴└─┴─┘   ┴ └─┘┴     ┴ └─┘└─┘
 #
 # """
 
@@ -25,7 +27,7 @@ class BillBoardPlayer(object):
         # todo: Spider is too slow, block the view! Initialize main window
         self.spider = BillBoardSpider()
         self.json_list = self.spider.read_from_file()
-        self.choices = []
+
         for i in range(1, 101):
             self.choices.append('%2s. %-10s %10s' % (
                 self.json_list[i]['this_rank'], self.json_list[i]['song'] + ' / ' + self.json_list[i]['artist'],
@@ -37,20 +39,33 @@ class BillBoardPlayer(object):
         self._setup_signals()
 
     def _setup_ui(self):
-        self.palette = [
-            ('banner', '', '', '', '#ffa', '#60d'),
-            ('streak', '', '', '', 'g50', '#60a'),
-            ('inside', '', '', '', 'g38', '#808'),
-            ('outside', '', '', '', 'g27', '#a06'),
-            ('bg', '', '', '', 'g7', '#d06'), ]
-        self.list_box = self.get_music_list(u'Music List', self.choices)
 
-        self.main = urwid.Padding(self.list_box, left=10, right=2)
-        top = urwid.Overlay(self.main, urwid.SolidFill(),
-                            align='left', width=('relative', 80),
-                            valign='middle', height=('relative', 60),
+        self.palette = [
+            ('header', 'yellow', ''),
+            ('list_btn', '', ''),
+            ('list_box', '', ''),
+            ('net_status', '', ''),
+            ('footer', 'yellow', ''), ]
+
+        header = '\n\n┬┐ ┬ ┬  ┬   ┬┐ ┌─┐┌─┐┬─┐┬─┐  ┌┬┐┌─┐┬─┐  ┬ ┌─┐┌─┐\n├┴┐│ │  │   ├┴┐│ │├─┤├┬┘│ │   │ │ │├─┘  │ │ ││ │\n┴─┘┴ ┴─┘┴─┘ ┴─┘└─┘┴ ┴┴└─┴─┘   ┴ └─┘┴    ┴ └─┘└─┘\n '
+
+        header_wrap = urwid.Text(('header', header), align='center')
+
+        footer = (u"Welcome to the Billboard Player!  "
+                  u"UP / DOWN / PAGE UP / PAGE DOWN scroll.  'q' exits.")
+        footer_wrap = urwid.Text(('footer', footer), align='center')
+
+        self.list_box = self.get_music_list(self.choices)
+        list_box_padding = urwid.Padding(self.list_box, left=10, right=10)
+
+        top = urwid.Overlay(list_box_padding, urwid.SolidFill(),
+                            align='left', width=('relative', 90),
+                            valign='middle', height=('relative', 80),
                             min_width=20, min_height=9)
-        self.main_loop = urwid.MainLoop(top, palette=self.palette)
+
+        main_frame = urwid.Frame(top, header=header_wrap, footer=footer_wrap)
+
+        self.main_loop = urwid.MainLoop(main_frame, palette=self.palette)
 
     def _setup_signals(self):
         urwid.register_signal(PlayerListBox, ['quit', 'next', 'pause', 'stop', 'mute', 'volume_up', 'volume_down'])
@@ -84,8 +99,8 @@ class BillBoardPlayer(object):
     def on_volume_down(self):
         self.music_player.volume_down()
 
-    def get_music_list(self, title, choices):
-        body = [urwid.Text(title), urwid.Divider()]
+    def get_music_list(self, choices):
+        body = [urwid.Divider()]
         for c in choices:
             button = urwid.Button(c)
             urwid.connect_signal(button, 'click', self.item_chosen, c)
