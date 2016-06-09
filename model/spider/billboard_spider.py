@@ -33,7 +33,7 @@ class BillBoardSpider(object):
         self.file_name = 'billboard_list.json'
 
         # do all the actions in this function
-        self.get_latest_list()
+        # self.get_latest_list()
 
     def _check_internet_on(self):
         try:
@@ -118,6 +118,14 @@ class BillBoardSpider(object):
         json_file = file(self.file_name)
         self.json_list = json.load(json_file)
         return True
+
+    def read_from_file(self):
+        if self._billboard_json_exist():
+            self._read_from_file()
+            return self.json_list
+        else:
+            return None
+
 
     def print_list(self):
         if not self.net_status:
