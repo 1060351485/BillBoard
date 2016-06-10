@@ -46,38 +46,72 @@ class BillBoardPlayer(object):
         self._setup_signals()
 
     def _setup_ui(self):
+
+        # todo: add time, week, playtime, network, PlayListButton
         self.palette = [
-            ('header', 'yellow', ''),
+            ('header', 'dark red', ''),
             ('list_btn', '', ''),
             ('list_box', '', ''),
+            ('time', '', ''),
+            ('week', '', ''),
+            ('progress', '', ''),
             ('net_status', '', ''),
-            ('footer', 'yellow', ''), ]
+            ('footer', 'dark red', ''),
+            ('bg1', '', '', '', '', 'g23'),
+            ('bg2', '', '')]
 
         header = '\n\n┬┐ ┬ ┬  ┬   ┬┐ ┌─┐┌─┐┬─┐┬─┐  ┌┬┐┌─┐┬─┐  ┬ ┌─┐┌─┐\n├┴┐│ │  │   ├┴┐│ │├─┤├┬┘│ │   │ │ │├─┘  │ │ ││ │\n┴─┘┴ ┴─┘┴─┘ ┴─┘└─┘┴ ┴┴└─┴─┘   ┴ └─┘┴    ┴ └─┘└─┘\n '
 
         header_wrap = urwid.Text(('header', header), align='center')
 
         footer = (u"Welcome to the Billboard Player! \n "
-                  u"   Up ⬆︎ / Down ⬇︎ / Page Up ⬅︎️ / Page Down ➡︎️ \n"
+                  u"   Up ⬆︎ / Down ⬇︎ / Page Up ⬅︎️ / Page Down ︎➡︎\n"
                   u" Play(p) Pause(p) Next(n) Stop(s) Mute(m) Quit(q)")
         footer_wrap = urwid.Text(('footer', footer), align='center')
 
-        self.list_box = self.get_music_list(self.choices)
-        list_box_padding = urwid.Padding(self.list_box, left=10, right=10)
+        current_time = urwid.Text(('header', 'current_time'), align='center')
+        current_week = urwid.Text(('header', 'current_week'), align='center')
+        progress = urwid.Text(('header', 'progress'), align='center')
+        net_status = urwid.Text(('header', 'status'), align='center')
 
-        top = urwid.Overlay(list_box_padding, urwid.SolidFill(),
+        self.list_box = self.get_music_list(self.choices)
+        # list_box_padding = urwid.Padding(self.list_box, left=10, right=10)
+
+        top = urwid.Overlay(self.list_box, urwid.SolidFill(),
                             align='left', width=('relative', 90),
                             valign='middle', height=('relative', 80),
                             min_width=20, min_height=9)
 
-        main_frame = urwid.Frame(top, header=header_wrap, footer=footer_wrap)
+        lb = urwid.SimpleListWalker([])
+        lb.extend([
+            urwid.AttrMap(header_wrap, 'header'),
+            urwid.AttrMap(urwid.Columns([
+                urwid.Pile([
+                    current_time]),
+                urwid.Pile([
+                    current_week]),
+                urwid.Pile([
+                    progress]),
+                urwid.Pile([
+                    net_status]),
+            ]), 'header'),
+        ])
+        list_box = urwid.ListBox(lb)
+        # columns = urwid.Columns([current_time, current_week, progress, net_status])
 
-        self.main_loop = urwid.MainLoop(main_frame, palette=self.palette)
+
+        # main_frame = urwid.Frame(top, header=list_box, footer=footer_wrap)
+
+
+        main_frame = urwid.Pile([list_box, top, footer_wrap])
+
+        main_frame_attribute = urwid.AttrMap(list_box, 'bg2')
+        self.main_loop = urwid.MainLoop(main_frame_attribute, palette=self.palette)
+        self.main_loop.screen.set_terminal_properties(colors=256)
 
     def _setup_signals(self):
         urwid.register_signal(PlayerListBox,
-                              ['quit', 'next', 'pause', 'stop', 'mute', 'volume_up', 'volume_down', 'cursor_page_up',
-                               'cursor_page_down'])
+                              ['quit', 'next', 'pause', 'stop', 'mute', 'volume_up', 'volume_down'])
         urwid.connect_signal(self.list_box, 'quit', self.on_quit)
         urwid.connect_signal(self.list_box, 'next', self.on_next)
         urwid.connect_signal(self.list_box, 'pause', self.on_pause)
@@ -85,8 +119,6 @@ class BillBoardPlayer(object):
         urwid.connect_signal(self.list_box, 'mute', self.on_mute)
         urwid.connect_signal(self.list_box, 'volume_up', self.on_volume_up)
         urwid.connect_signal(self.list_box, 'volume_down', self.on_volume_down)
-        urwid.connect_signal(self.list_box, 'cursor_page_up', self.on_page_up)
-        urwid.connect_signal(self.list_box, 'cursor_page_down', self.on_page_down)
 
     def on_quit(self):
         self.music_player.quit()
@@ -112,15 +144,6 @@ class BillBoardPlayer(object):
 
     def on_volume_down(self):
         self.music_player.volume_down()
-
-    # todo: page up and page down
-    def on_page_up(self):
-        self.list_box.shift_focus(-10)
-        print 'up'
-
-    def on_page_down(self):
-        self.list_box.shift_focus(10)
-        print 'down'
 
     def get_music_list(self, choices):
         body = [urwid.Divider()]
