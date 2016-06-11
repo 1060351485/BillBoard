@@ -54,5 +54,4 @@ class PlayerListBox(urwid.ListBox):
             urwid.emit_signal(self, 'volume_down')
         elif key in ('}', ']'):
             urwid.emit_signal(self, 'volume_up')
-            # elif key in ('<', ','):
-            #     super(PlayerListBox, self).keypress(size, key)
+
