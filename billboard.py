@@ -46,8 +46,51 @@ class BillBoardPlayer(object):
         self._setup_signals()
 
     def _setup_ui(self):
-
         # todo: add time, week, playtime, network, PlayListButton
+
+        def get_music_list(choices):
+            body = [urwid.Divider()]
+            for c in choices:
+                button = PlayerButton(c, None)
+                urwid.connect_signal(button, 'click', self.item_chosen, c)
+                body.append(urwid.AttrMap(button, None, focus_map='reversed'))
+            return PlayerListBox(urwid.SimpleFocusListWalker(body))
+
+        def get_header(attribute):
+            header = '\n\n┬┐ ┬ ┬  ┬   ┬┐ ┌─┐┌─┐┬─┐┬─┐  ┌┬┐┌─┐┬─┐  ┬ ┌─┐┌─┐\n├┴┐│ │  │   ├┴┐│ │├─┤├┬┘│ │   │ │ │├─┘  │ │ ││ │\n┴─┘┴ ┴─┘┴─┘ ┴─┘└─┘┴ ┴┴└─┴─┘   ┴ └─┘┴    ┴ └─┘└─┘\n '
+            header_wrap = urwid.Text((attribute, header), align='center')
+            return header_wrap
+
+        def get_footer(attribute):
+            footer = (u"Welcome to the Billboard Player! \n "
+                      u"   Up ⬆︎ / Down ⬇︎ / Page Up ⬅︎️ / Page Down ︎➡︎\n"
+                      u" Play(p) Pause(p) Next(n) Stop(s) Mute(m) Quit(q)")
+            footer_wrap = urwid.Text((attribute, footer), align='center')
+            return footer_wrap
+
+        # tim_col, wek_col, prog_col, net_col, time_txt, week_txt
+        def get_status_bar():
+            current_time = urwid.Text(('header', 'current_time'), align='center')
+            current_week = urwid.Text(('header', 'current_week'), align='center')
+            progress = urwid.Text(('header', 'progress'), align='center')
+            net_status = urwid.Text(('header', 'status'), align='center')
+
+            lb = [
+                urwid.AttrMap(urwid.Columns([
+                    urwid.Pile([
+                        current_time]),
+                    urwid.Pile([
+                        current_week]),
+                    urwid.Pile([
+                        progress]),
+                    urwid.Pile([
+                        net_status]),
+                ]), 'header'),
+            ]
+            # grid = urwid.GridFlow([current_time, current_week, progress, net_status], 20, 2, 0, 'center')
+            list_box = urwid.ListBox(urwid.SimpleListWalker(lb))
+            return list_box
+
         self.palette = [
             ('header', 'dark red', ''),
             ('list_btn', '', ''),
@@ -60,52 +103,18 @@ class BillBoardPlayer(object):
             ('bg1', '', '', '', '', 'g23'),
             ('bg2', '', '')]
 
-        header = '\n\n┬┐ ┬ ┬  ┬   ┬┐ ┌─┐┌─┐┬─┐┬─┐  ┌┬┐┌─┐┬─┐  ┬ ┌─┐┌─┐\n├┴┐│ │  │   ├┴┐│ │├─┤├┬┘│ │   │ │ │├─┘  │ │ ││ │\n┴─┘┴ ┴─┘┴─┘ ┴─┘└─┘┴ ┴┴└─┴─┘   ┴ └─┘┴    ┴ └─┘└─┘\n '
+        self.list_box = get_music_list(self.choices)
 
-        header_wrap = urwid.Text(('header', header), align='center')
+        list_box_padding = urwid.Padding(self.list_box, left=10, right=10)
 
-        footer = (u"Welcome to the Billboard Player! \n "
-                  u"   Up ⬆︎ / Down ⬇︎ / Page Up ⬅︎️ / Page Down ︎➡︎\n"
-                  u" Play(p) Pause(p) Next(n) Stop(s) Mute(m) Quit(q)")
-        footer_wrap = urwid.Text(('footer', footer), align='center')
+        top = urwid.Overlay(list_box_padding, get_status_bar(),
+                            align='center', width=('relative', 90),
+                            valign='bottom', height=('relative', 90),
+                            min_width=20, min_height=20)
 
-        current_time = urwid.Text(('header', 'current_time'), align='center')
-        current_week = urwid.Text(('header', 'current_week'), align='center')
-        progress = urwid.Text(('header', 'progress'), align='center')
-        net_status = urwid.Text(('header', 'status'), align='center')
+        main_frame = urwid.Frame(top, header=get_header('header'), footer=get_footer('footer'))
 
-        self.list_box = self.get_music_list(self.choices)
-        # list_box_padding = urwid.Padding(self.list_box, left=10, right=10)
-
-        top = urwid.Overlay(self.list_box, urwid.SolidFill(),
-                            align='left', width=('relative', 90),
-                            valign='middle', height=('relative', 80),
-                            min_width=20, min_height=9)
-
-        lb = urwid.SimpleListWalker([])
-        lb.extend([
-            urwid.AttrMap(header_wrap, 'header'),
-            urwid.AttrMap(urwid.Columns([
-                urwid.Pile([
-                    current_time]),
-                urwid.Pile([
-                    current_week]),
-                urwid.Pile([
-                    progress]),
-                urwid.Pile([
-                    net_status]),
-            ]), 'header'),
-        ])
-        list_box = urwid.ListBox(lb)
-        # columns = urwid.Columns([current_time, current_week, progress, net_status])
-
-
-        # main_frame = urwid.Frame(top, header=list_box, footer=footer_wrap)
-
-
-        main_frame = urwid.Pile([list_box, top, footer_wrap])
-
-        main_frame_attribute = urwid.AttrMap(list_box, 'bg2')
+        main_frame_attribute = urwid.AttrMap(main_frame, 'bg2')
         self.main_loop = urwid.MainLoop(main_frame_attribute, palette=self.palette)
         self.main_loop.screen.set_terminal_properties(colors=256)
 
@@ -144,14 +153,6 @@ class BillBoardPlayer(object):
 
     def on_volume_down(self):
         self.music_player.volume_down()
-
-    def get_music_list(self, choices):
-        body = [urwid.Divider()]
-        for c in choices:
-            button = PlayerButton(c, None)
-            urwid.connect_signal(button, 'click', self.item_chosen, c)
-            body.append(urwid.AttrMap(button, None, focus_map='reversed'))
-        return PlayerListBox(urwid.SimpleFocusListWalker(body))
 
     def item_chosen(self, button, choice):
         # print choice
