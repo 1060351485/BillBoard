@@ -32,7 +32,7 @@ class Player(object):
         if self.is_playing:
             self.subprocess.kill()
         if self.platfrom == 'Darwin':
-            self.subprocess = subprocess.Popen(['mplayer', '-really-quiet', self.music_url + name],
+            self.subprocess = subprocess.Popen(['mplayer', '-really-quiet', name],
                                                stdin=subprocess.PIPE,
                                                stderr=self.error_handle)
         self.is_playing = True

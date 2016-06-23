@@ -14,6 +14,7 @@ import os
 import urllib2
 import re
 import json
+import requests
 from bs4 import BeautifulSoup
 
 net_ease_url = 'http://music.163.com/#/discover/toplist?id=60198'
@@ -126,7 +127,6 @@ class BillBoardSpider(object):
         else:
             return None
 
-
     def print_list(self):
         if not self.net_status:
             print 'No network'
@@ -181,9 +181,9 @@ class BillBoardSpider(object):
             return False
         return True
 
-
 # spider = BillBoardSpider()
 # print spider.get_list_from(100, 20)
+# spider.get_latest_list()
 # print spider.get_billboard_list()
 # billboard_list = spider.get_billboard_list()
 # print billboard_list
