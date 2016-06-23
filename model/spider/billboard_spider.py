@@ -14,6 +14,7 @@ import os
 import urllib2
 import re
 import json
+import threading
 import requests
 from bs4 import BeautifulSoup
 
@@ -85,7 +86,7 @@ class BillBoardSpider(object):
 
         # check if there is a new list
         if self._check_is_latest(date_time):
-            return
+            return self.json_list
 
         # todo: single quote were changed to &#039;
         # song_list = re.findall(r'chart-row__song">([a-Z]*?)</h2', page)
@@ -97,7 +98,9 @@ class BillBoardSpider(object):
 
         # Write the list to file
         self._save_to_json(date_time, last_week, song_list, singer_list)
-        self._write_to_file()
+        trd = threading.Thread(target=self._write_to_file)
+        trd.start()
+        return self.json_list
 
     def _save_to_json(self, date_time, last_week, song_list, singer_list):
         json_list = [date_time]
@@ -111,9 +114,12 @@ class BillBoardSpider(object):
         self.json_list = json_list
 
     def _write_to_file(self):
-        file_object = open(self.file_name, 'w')
-        file_object.write(str(json.dumps(self.json_list)))
-        file_object.close()
+        try:
+            file_object = open(self.file_name, 'w')
+            file_object.write(str(json.dumps(self.json_list)))
+            file_object.close()
+        except IOError, e:
+            print e
 
     def _read_from_file(self):
         json_file = file(self.file_name)

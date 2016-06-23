@@ -11,7 +11,6 @@ import os
 import time
 import re
 import hashlib
-import md5
 import json
 import urllib
 import requests
@@ -55,7 +54,7 @@ class NetEaseApi(object):
         byte1_len = len(byte1)
         for i in xrange(len(byte2)):
             byte2[i] = byte2[i] ^ byte1[i % byte1_len]
-        m = md5.new()
+        m = hashlib.md5()
         m.update(byte2)
         result = m.digest().encode('base64')[:-1]
         result = result.replace('/', '_')
@@ -79,13 +78,12 @@ class NetEaseApi(object):
 
         for i in j['result']['tracks']:
             song_info = {}
-            # print json.dumps(i, indent=4)
-            # break
             song_info['id'] = i['id']
             song_info['song_url'] = u'http://music.163.com/song/%s' % i['id']
             song_info['durl'], song_info['mp3_quality'] = self.get_durl(i)
-            self.url_dict[i['name'].strip().lower()] = song_info
-        # print json.dumps(self.url_dict, indent=4)
+            name = re.sub(r'\(.*\)', '', i['name']).strip().lower()
+
+            self.url_dict[name] = song_info
         return self.url_dict
 
     # def download_music(self):
