@@ -3,7 +3,7 @@
 
 # """
 #
-# 音乐播放
+#  music player
 #
 # """
 
@@ -15,7 +15,9 @@ import os
 
 class Player(object):
     def __init__(self):
+        # maybe in the condition that player is playing but it is paused
         self.is_playing = False
+        self.is_pause = False
         self.is_quit = True
         self.current_playing = None
         self.loop_one_song = False
@@ -36,6 +38,7 @@ class Player(object):
                                                stdin=subprocess.PIPE,
                                                stderr=self.error_handle)
         self.is_playing = True
+        self.is_pause = False
         self.current_playing = name
 
     def stop(self):
@@ -46,12 +49,13 @@ class Player(object):
     def pause(self):
         if self.is_playing:
             self.subprocess.stdin.write(u'p')
-        self.is_playing = not self.is_playing
+            self.is_pause = not self.is_pause
 
     def mute(self):
         if self.is_playing:
             self.subprocess.stdin.write(u'm')
 
+    # todo: volume up and down
     def volume_up(self):
         if self.is_playing:
             self.subprocess.stdin.write(u'0')
@@ -60,10 +64,7 @@ class Player(object):
         if self.is_playing:
             self.subprocess.stdin.write(u'9')
 
-    def close(self):
-        pass
-
-    def next(self):
+    def next_song(self):
         pass
 
     def quit(self):

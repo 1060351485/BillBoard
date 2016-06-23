@@ -10,14 +10,25 @@
 # """
 
 
-import urwid
 import re
+import sys
+import urwid
+
 from views.playerListBox import PlayerListBox
 from views.playerListBox import PlayerButton
 from views.playerListBox import MainWindow
 from model.player.player import Player
 from model.spider.billboard_spider import BillBoardSpider
 from model.API.netease_api import NetEaseApi
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename='billboard.log',
+                    filemode='w+')
+
 
 class BillBoardPlayer(object):
     def __init__(self):
@@ -33,17 +44,16 @@ class BillBoardPlayer(object):
         self.current_rank_color = None
         self.last_rank_color = None
 
-        # todo: Spider is too slow, block the view! Initialize main window, need to change to logic when start up
+        # spider get latest billboard list
         self.spider = BillBoardSpider()
         self.json_list = self.spider.get_latest_list()
-        self.json_list = self.spider.read_from_file()
 
         for i in range(1, 101):
             self.choices.append('%2s. %-10s %10s\n' % (
                 self.json_list[i]['this_rank'], self.json_list[i]['song'] + ' / ' + self.json_list[i]['artist'],
                 self.json_list[i]['last_rank']))
 
-        # netease music
+        # net_ease music
         nem = NetEaseApi()
         self.song_dict = nem.get_url_list()
 
@@ -55,6 +65,7 @@ class BillBoardPlayer(object):
     """
         UI
     """
+
     def _setup_ui(self):
         # todo: add time, week, playtime, network, PlayListButton
         palette = [
@@ -87,17 +98,15 @@ class BillBoardPlayer(object):
     """
          player
     """
+
     def on_quit(self):
         self.music_player.quit()
         raise urwid.ExitMainLoop()
 
     def on_next(self):
-        self.music_player.next()
+        self.music_player.next_song()
 
-    # todo: check validness
     def on_pause(self):
-        # if not self.music_player.is_playing:
-        # self.music_player.play()
         self.music_player.pause()
 
     def on_stop(self):
@@ -114,25 +123,26 @@ class BillBoardPlayer(object):
 
     def item_chosen(self, button, choice):
 
-        # print choice
-        name = re.findall(r'.\s(.*?)\s/\s', choice)[0]
-        name = name.lower()
+        # find song name, remove '(***)' part and then lower case to match billboard json list
+        name = re.sub(r'\(.*\)', '', re.findall(r'.\s(.*?)\s/\s', choice)[0]).lower()
         if name in self.song_dict and 'durl' in self.song_dict[name]:
             self.music_player.play(self.song_dict[name]['durl'])
             print '------------------'
         else:
-            pass
-        # response = urwid.Text([u'You chose ', choice, u'\n'])
-        # done = urwid.Button(u'Ok')
-        # urwid.connect_signal(done, 'click', self.exit_program)
-        # self.main.original_widget = urwid.Filler(urwid.Pile([response,
-        #                                                 urwid.AttrMap(done, None, focus_map='reversed')]))
+            logging.warning('play %s failed' % name)
+            # response = urwid.Text([u'You chose ', choice, u'\n'])
+            # done = urwid.Button(u'Ok')
+            # urwid.connect_signal(done, 'click', self.exit_program)
+            # self.main.original_widget = urwid.Filler(urwid.Pile([response,
+            #                                                 urwid.AttrMap(done, None, focus_map='reversed')]))
 
     def start(self):
         self.main_loop.run()
 
 
 def main():
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
     BBplayer = BillBoardPlayer()
     BBplayer.start()
 
