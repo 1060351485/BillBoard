@@ -8,7 +8,7 @@
 # """
 
 import urwid
-
+import string
 
 # todo: need to add more attributes
 class PlayerButton(urwid.Button):
@@ -83,25 +83,28 @@ class MainWindow(object):
         return header_wrap
 
     def _get_status_bar(self, week_col, prog_txt, prog_col):
-        current_week = urwid.Text(('header', self.json_list[0]), align='center')
-        progress = urwid.Text(('header', 'progress'), align='center')
-        net_status = urwid.Text(('header', 'status'), align='center')
+        self.current_week = urwid.Text(('header', self.json_list[0]), align='center')
+        self.progress = urwid.Text(('header', 'progress'), align='center')
+        self.net_status = urwid.Text(('header', ''), align='center')
 
         lb = [
             urwid.AttrMap(urwid.Columns([
                 urwid.Pile([
-                    current_week]),
+                    self.current_week]),
                 urwid.Pile([
-                    progress]),
+                    self.progress]),
                 urwid.Pile([
-                    net_status]),
+                    self.net_status]),
             ]), 'header'),
         ]
         # grid = urwid.GridFlow([current_time, current_week, progress, net_status], 20, 2, 0, 'center')
 
         list_box = urwid.ListBox(urwid.SimpleListWalker(lb))
-        list_box = urwid.Padding(list_box, left=10, right=60)
+        list_box = urwid.Padding(list_box, left=10, right=10)
         return list_box
+
+    def set_status(self, name):
+        self.net_status.set_text('Now Playing: %s' % string.capwords(name))
 
     def _get_music_list(self, choices):
         body = [urwid.Divider()]
@@ -114,6 +117,6 @@ class MainWindow(object):
     def _get_footer(self, attribute):
         footer = (u"Welcome to the Billboard Player! \n "
                   u"   Up ⬆︎ / Down ⬇︎ / Page Up ⬅︎️ / Page Down ︎➡︎\n"
-                  u" Play(p) Pause(p) Next(n) Stop(s) Mute(m) Quit(q)")
+                  u" Play(p) Pause(p) Next(n) Stop(s) Mute(m) Quit(q) Volume Down&Up([)&(]) ")
         footer_wrap = urwid.Text((attribute, footer), align='center')
         return footer_wrap

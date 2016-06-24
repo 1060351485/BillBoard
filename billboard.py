@@ -46,7 +46,8 @@ class BillBoardPlayer(object):
 
         # spider get latest billboard list
         self.spider = BillBoardSpider()
-        self.json_list = self.spider.get_latest_list()
+        # self.json_list = self.spider.get_latest_list()
+        self.json_list = self.spider.read_from_file()
 
         for i in range(1, 101):
             self.choices.append('%2s. %-10s %10s\n' % (
@@ -79,9 +80,9 @@ class BillBoardPlayer(object):
             ('footer', 'dark red', ''),
             ('bg', '', '')]
 
-        main_window = MainWindow(self.json_list, self.choices, self.item_chosen)
-        self.list_box = main_window.list_box
-        self.main_loop = urwid.MainLoop(main_window.main_frame, palette=palette)
+        self.main_window = MainWindow(self.json_list, self.choices, self.item_chosen)
+        self.list_box = self.main_window.list_box
+        self.main_loop = urwid.MainLoop(self.main_window.main_frame, palette=palette)
         self.main_loop.screen.set_terminal_properties(colors=256)
 
     def _setup_signals(self):
@@ -94,6 +95,9 @@ class BillBoardPlayer(object):
         urwid.connect_signal(self.list_box, 'mute', self.on_mute)
         urwid.connect_signal(self.list_box, 'volume_up', self.on_volume_up)
         urwid.connect_signal(self.list_box, 'volume_down', self.on_volume_down)
+
+    def _refresh_playing_status(self, name):
+        self.main_window.set_status(name)
 
     """
          player
@@ -126,8 +130,8 @@ class BillBoardPlayer(object):
         # find song name, remove '(***)' part and then lower case to match billboard json list
         name = re.sub(r'\(.*\)', '', re.findall(r'.\s(.*?)\s/\s', choice)[0]).lower()
         if name in self.song_dict and 'durl' in self.song_dict[name]:
-            self.music_player.play(self.song_dict[name]['durl'])
-            print '------------------'
+            self.music_player.play(name, self.song_dict[name]['durl'])
+            self._refresh_playing_status(name)
         else:
             logging.warning('play %s failed' % name)
             # response = urwid.Text([u'You chose ', choice, u'\n'])
