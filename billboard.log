@@ -1,2 +1,2 @@
-五, 24  6 2016 14:58:36 connectionpool.py[line:213] INFO Starting new HTTP connection (1): music.163.com
-五, 24  6 2016 14:58:36 connectionpool.py[line:395] DEBUG "GET /api/playlist/detail?id=60198&ids=%5B60198%5D HTTP/1.1" 200 None
+日, 10  7 2016 19:44:32 connectionpool.py[line:213] INFO Starting new HTTP connection (1): music.163.com
+日, 10  7 2016 19:44:32 connectionpool.py[line:395] DEBUG "GET /api/playlist/detail?id=60198&ids=%5B60198%5D HTTP/1.1" 200 None
