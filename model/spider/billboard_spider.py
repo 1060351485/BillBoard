@@ -94,7 +94,7 @@ class BillBoardSpider(object):
 
         last_week = re.findall(r'Last\sWeek:\s([0-9 -]+)</', self.page)
         song_list = soup_page.find_all('h2', class_='chart-row__song')
-        singer_list = soup_page.find_all('a', class_='chart-row__artist')
+        singer_list = soup_page.find_all(class_='chart-row__artist')
 
         # Write the list to file
         self._save_to_json(date_time, last_week, song_list, singer_list)

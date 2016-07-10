@@ -46,7 +46,7 @@ class BillBoardPlayer(object):
 
         # spider get latest billboard list
         self.spider = BillBoardSpider()
-        # self.json_list = self.spider.get_latest_list()
+        self.json_list = self.spider.get_latest_list()
         self.json_list = self.spider.read_from_file()
 
         for i in range(1, 101):
