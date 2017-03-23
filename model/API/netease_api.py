@@ -15,6 +15,8 @@ import json
 import urllib
 import requests
 import base64
+import logging
+import parser
 from Crypto.Cipher import AES
 from mutagen.id3 import ID3, TRCK, TIT2, TALB, TPE1, TDRC, COMM, TPOS
 
@@ -70,6 +72,7 @@ class NetEaseApi(object):
         return text
 
     def get_url_list(self):
+        logging.debug("get_url_list")
         j = self.ss.get(
             playlist_api % (
                 self.playlist_id, urllib.quote('[%s]' % self.playlist_id)
@@ -96,12 +99,14 @@ class NetEaseApi(object):
     #     pass
 
     def get_durl(self, i):
+        logging.debug("get_durl")
         for q in ('hMusic', 'mMusic', 'lMusic'):
             if i[q]:
                 dfsId = str(i[q]['dfsId'])
                 edfsId = self.encrypted_id(dfsId)
                 durl = u'http://m2.music.126.net/%s/%s.mp3' \
                        % (edfsId, dfsId)
+                logging.debug("get_durl: %s" % durl)
                 return durl, q[0]
         return None, None
 

@@ -11,7 +11,7 @@ import subprocess
 import Queue
 import platform
 import os
-
+import logging
 
 class Player(object):
     def __init__(self):
@@ -33,6 +33,7 @@ class Player(object):
         # print platform.release()
 
     def play(self, name, song_url):
+        logging.debug("play")
         if self.is_playing:
             self.subprocess.kill()
         if self.platfrom == 'Darwin':
